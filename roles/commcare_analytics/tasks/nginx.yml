@@ -1,0 +1,38 @@
+---
+
+# NGINX
+
+- name: Install NGINX.
+  apt:
+    name: nginx
+    update_cache: "{{ apt_update_cache }}"
+    state: present
+  tags:
+    - packages
+    - nginx
+
+- name: Start NGINX.
+  service:
+    name: ufw
+    enabled: yes
+    state: started
+  tags: nginx
+
+- name: Adding 'www-data' user to {{ app_group }} group.
+  user:
+    name: www-data
+    groups: "{{ app_group }}"
+    append: yes
+  tags: nginx
+
+- name: Disable default nginx config.
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  tags: nginx
+
+- name: Test & reload nginx config.
+  shell: nginx -t && nginx -s reload
+  tags: nginx
+
+...
