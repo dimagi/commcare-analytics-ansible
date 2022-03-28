@@ -1,0 +1,48 @@
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  '' close;
+}
+
+upstream {{ app_name }} {
+  # fail_timeout=0 means we always retry an upstream even if it failed
+  # to return a good HTTP response (in case the Unicorn master nukes a
+  # single worker for timing out).
+
+  server unix:{{ run_dir }}/gunicorn.sock fail_timeout=0;
+}
+
+server {
+  # Serve content
+  server_name {{ public_host }};
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  client_max_body_size 4G;
+
+  access_log {{ nginx_access_log_file }};
+  error_log {{ nginx_error_log_file }};
+
+  location /static/ {
+    alias {{ static_dir }}/;
+  }
+
+  location /media/ {
+    alias {{ media_dir }}/;
+  }
+
+  location / {
+
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_read_timeout {{ gunicorn_timeout_seconds }}s;
+    proxy_redirect off;
+
+    # Try to serve static files from nginx, no point in making an
+    # *application* server like Unicorn/Rainbows! serve static files.
+    if (!-f $request_filename) {
+      proxy_pass http://{{ app_name }};
+      break;
+    }
+  }
+
+}

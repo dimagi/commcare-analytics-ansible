@@ -1,0 +1,86 @@
+---
+
+ansible_python_interpreter: /usr/bin/python3
+base_python_package: "python3"
+
+apt_update_cache: yes
+
+ssl_enabled: no
+app_name: commcare_analytics
+app_user: "{{ vault_ansible_user }}"
+home_dir: /home/{{ app_user }}
+app_group: webapps
+project_name: commcare-analytics
+base_dir: "{{home_dir}}/www"
+project_dir: "{{ base_dir }}/{{ project_name }}"
+src_dir: "{{ base_dir }}/{{ project_name }}/code_root"
+virtualenv_dir: "{{ base_dir }}/.virtualenvs/{{ project_name }}"
+virtualenv_python_version: python3.8
+run_dir: "{{ base_dir }}/run"
+log_dir: "{{ base_dir }}/log"
+
+#project_timezone: 'America/New_York'
+
+# superset defaults
+superset_enabled: yes
+superset_ssl_enabled: no
+superset_db_name: "superset"
+superset_project_dir: "{{ base_dir }}/superset"
+superset_virtualenv_dir: "{{ base_dir }}/.virtualenvs/superset"
+superset_username: admin
+superset_firstname: Admin
+superset_lastname: User
+superset_email: email@example.com
+superset_password: "{{ default_superset_password }}"
+superset_public_host: 100.100.100.100
+
+superset_ketchup_git_url: "https://github.com/dimagi/superset-patchup.git"
+superset_ketchup_version: "master"
+
+# authentication configuration
+# AUTH_OID : Is for OpenID
+# AUTH_DB : Is for database (username/password()
+# AUTH_LDAP : Is for LDAP
+# AUTH_OAUTH : Is for oAuth
+# AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
+superset_auth_type: AUTH_DB
+superset_oauth_providers:
+
+# allow user self registration
+superset_auth_user_registration: TRUE
+# default role when user self registers
+superset_auth_user_registration_role: Admin
+
+
+postgresql_version: 12
+postgresql_user: postgres
+postgresql_allow_remote_connections: no
+
+default_db_name: "{{ app_name }}"
+default_db_user: "{{ app_name }}"
+default_db_password: "secret"
+default_db_host: 127.0.0.1
+default_db_port: 5432
+
+mapbox_api_key: random_key
+
+superset_environment:
+  SQLALCHEMY_DATABASE_URI: 'postgresql://{{ default_db_user }}:{{ default_db_password }}@{{ default_db_host }}:{{ default_db_port }}/{{ superset_db_name }}'
+  FLASK_APP: superset
+  SUPERSET_CONFIG_PATH: '{{ superset_project_dir }}/superset_config.py'
+
+gunicorn_num_workers: 3
+gunicorn_max_requests: 0
+gunicorn_reload_workers: true
+gunicorn_timeout_seconds: 30
+
+nginx_access_log_file: "{{ log_dir }}/nginx.access.log"
+nginx_error_log_file: "{{ log_dir }}/nginx.error.log"
+
+certbot_auto_renew: yes
+certbot_script: /opt/certbot-auto
+certbot_dir: /etc/letsencrypt
+certbot_admin_email: admin@example.com
+certbot_domains:
+  - example.com
+  - www.example.com

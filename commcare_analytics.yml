@@ -1,0 +1,14 @@
+---
+# Issue: https://github.com/ansible/ansible/issues/57529#issuecomment-513143430
+- hosts: all
+
+- name: Create Commcare Analytics Server.
+  hosts: all
+  become: yes
+  become_user: root
+
+  gather_facts: no
+
+
+  roles:
+    - commcare_analytics
