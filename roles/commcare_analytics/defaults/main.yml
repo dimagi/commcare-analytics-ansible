@@ -50,6 +50,8 @@ superset_oauth_providers:
 superset_auth_user_registration: TRUE
 # default role when user self registers
 superset_auth_user_registration_role: Admin
+# Re-evaluate user's roles at each login
+superset_sync_roles_at_login: True
 
 
 postgresql_version: 12

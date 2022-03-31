@@ -78,7 +78,9 @@ OAUTH_PROVIDERS = [
 
 # The default user self registration role
 AUTH_USER_REGISTRATION_ROLE = '{{ superset_auth_user_registration_role }}'
-# Will allow user self registration
+# Enable automatic creation of user account after first time oauth is done successfully
 AUTH_USER_REGISTRATION = {{ superset_auth_user_registration }}
+# If we should replace ALL the user's roles each login, or only on registration
+AUTH_ROLES_SYNC_AT_LOGIN = {{ superset_sync_roles_at_login }}
 
 CUSTOM_SECURITY_MANAGER = CustomSecurityManager
