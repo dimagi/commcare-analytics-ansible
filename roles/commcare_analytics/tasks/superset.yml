@@ -63,13 +63,6 @@
     backup: yes
   tags: superset
 
-- name: Install superset patchup (ketchup)
-  pip:
-    name: 'git+{{ superset_ketchup_git_url }}@{{ superset_ketchup_version }}'
-    state: forcereinstall
-    virtualenv: "{{ superset_virtualenv_dir }}"
-  tags: superset
-
 - name: Install HQ superset
   pip:
     name: 'git+https://github.com/dimagi/hq_superset.git@master'
