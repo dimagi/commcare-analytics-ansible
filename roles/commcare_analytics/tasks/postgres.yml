@@ -37,7 +37,7 @@
   template:
     src: postgres/postgresql.conf.j2
     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
-    mode: 0640
+    mode: 0644
   notify: restart postgresql
 
 - name: Create PostgreSQL ACL

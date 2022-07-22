@@ -160,7 +160,7 @@
   file:
     path: "{{ log_dir }}"
     state: directory
-    mode: 0644
+    mode: 0750
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
 
@@ -171,7 +171,7 @@
     force: no
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: 0644
+    mode: 0750
   with_items:
     - supervisor.log
   tags: superset
