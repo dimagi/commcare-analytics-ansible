@@ -70,6 +70,13 @@
     virtualenv: "{{ superset_virtualenv_dir }}"
   tags: superset
 
+- name: Install HQ superset
+  pip:
+    name: 'git+https://github.com/dimagi/hq_superset.git@master'
+    state: forcereinstall
+    virtualenv: "{{ superset_virtualenv_dir }}"
+  tags: superset
+
 - name: Install packages required by Superset in the virtualenv.
   pip:
     virtualenv: "{{ superset_virtualenv_dir }}"
