@@ -1,0 +1,45 @@
+---
+
+superset_enabled: yes
+superset_public_host: "commcare-analytics.dimagi.com"
+superset_username: admin
+superset_firstname: Admin
+superset_lastname: User
+superset_email: email@example.com
+superset_ssl_enabled: no
+
+app_user: "{{ vault_ansible_user }}"
+
+project_timezone: 'Etc/UTC'
+
+certbot_auto_renew: no
+
+swap_file_enabled: yes
+
+apt_update_cache: no
+
+postgresql_version: 12
+
+postgresql_user: "{{ vault_postgres_user }}"
+default_db_password: "{{ vault_default_db_password }}"
+default_superset_password: "{{ vault_default_superset_password }}"
+# TODO: Define vault_superset_secret_key
+superset_secret_key: "{{ vault_superset_secret_key }}"
+mapbox_api_key: "{{ vault_mapbox_api_key }}"
+
+# Superset Auth settings
+superset_oauth_providers:
+  - name: "{{ vault_oauth_name }}"
+    icon: 'fa-address-card'
+    token_key: 'access_token'
+    client_id: "{{ vault_oauth_client_id }}"
+    client_secret: "{{ vault_oauth_client_secret }}"
+    access_token_method: 'POST'
+    api_base_url: 'https://www.commcarehq.org/oauth'
+    authorize_url: 'https://www.commcarehq.org/oauth/authorize'
+    client_kwargs: {'scope': 'access_apis'}
+    access_token_url: 'https://www.commcarehq.org/oauth/token'
+    access_token_headers: {'Authorization': 'Basic Base64EncodedClientIdAndSecret'}
+    access_token_params: {'client_id': "{{ vault_oauth_client_id }}"}
+
+...
