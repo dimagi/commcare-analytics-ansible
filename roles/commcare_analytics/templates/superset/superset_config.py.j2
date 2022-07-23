@@ -4,7 +4,10 @@ from superset_patchup.oauth import CustomSecurityManager
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = 'postgresql://{{ default_db_user }}:{{ default_db_password }}@{{ default_db_host }}:{{ default_db_port }}/{{ superset_db_name }}'
 PUBLIC_ROLE_LIKE_GAMMA = True
-MAPBOX_API_KEY = 'mapbox_api_key'
+MAPBOX_API_KEY = '{{ mapbox_api_key }}'
+
+# Generate a reasonable SECRET_KEY with `openssl rand -base64 48`
+SECRET_KEY = "{{ superset_secret_key }}"
 
 # ----------------------------------------------------
 # AUTHENTICATION CONFIG
