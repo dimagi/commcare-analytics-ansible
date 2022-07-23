@@ -1,5 +1,7 @@
 ---
 
+vault_ansible_user: ubuntu
+
 ansible_python_interpreter: /usr/bin/python3
 base_python_package: "python3"
 
@@ -32,10 +34,6 @@ superset_firstname: Admin
 superset_lastname: User
 superset_email: email@example.com
 superset_password: "{{ default_superset_password }}"
-superset_public_host: 100.100.100.100
-
-superset_ketchup_git_url: "https://github.com/dimagi/superset-patchup.git"
-superset_ketchup_version: "master"
 
 # authentication configuration
 # AUTH_OID : Is for OpenID
