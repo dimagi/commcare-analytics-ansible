@@ -86,3 +86,11 @@ certbot_admin_email: admin@example.com
 certbot_domains:
   - example.com
   - www.example.com
+
+# Database backup variables
+postgresql_backup_dir: "/var/tmp"
+postgresql_backup_db_list: "commcare_analytics, superset"
+postgresql_user_home_dir: "/var/lib/postgresql"
+
+aws_region: us-west-2
+s3_bucket: commcare-analytics-database-backups
