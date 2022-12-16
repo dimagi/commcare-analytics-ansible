@@ -91,6 +91,3 @@ certbot_domains:
 postgresql_backup_dir: "/var/tmp"
 postgresql_backup_db_list: "commcare_analytics, superset"
 postgresql_user_home_dir: "/var/lib/postgresql"
-
-aws_region: us-west-2
-s3_bucket: commcare-analytics-database-backups
