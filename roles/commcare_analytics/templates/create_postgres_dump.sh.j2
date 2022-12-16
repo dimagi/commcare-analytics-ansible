@@ -36,7 +36,7 @@ tar --zstd -cf $BACKUP_DIRECTORY.tar.zst $BACKUP_DIRECTORY;
 
 #Upload to S3
 log "Uploading to S3";
-/usr/local/bin/aws s3api put-object --bucket "{{ s3_bucket }}" --key $BACKUP_NAME --server-side-encryption AES256 --body $BACKUP_DIRECTORY.tar.zst
+/usr/local/bin/aws s3api put-object --bucket "{{ vault_s3_bucket }}" --key $BACKUP_NAME --server-side-encryption AES256 --body $BACKUP_DIRECTORY.tar.zst
 
 log "Cleaning up local dumps";
 rm -rf $BACKUP_DIRECTORY $BACKUP_DIRECTORY.tar.zst;
