@@ -2,5 +2,5 @@
 secrets:
   db_password: "database_password"
   s3_bucket: backups
-  amazon_s3_access_key: "access_key"
-  amazon_s3_secret_key: "secret_key"
+  amazon_s3_access_key: ""
+  amazon_s3_secret_key: ""
