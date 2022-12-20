@@ -1,14 +1,13 @@
 Production Environments
 =======================
 
-This page describes creating and managing production inventory files.
-For details on deploying a production environment, see the [deployment page](/deployment).
+This page describes creating and managing production environments.
 
 ### Directory overview
 
 Environments live in the `environments/` folder.
 
-To add a new environment you can follow the steps below, replacing `myproject` with your project name.
+To add a new environment you can follow the steps below, replacing `your_environment` with your environment name.
 
 
 ### Initialize environment directory
@@ -78,7 +77,7 @@ ssh -i ~/myproject.pem ubuntu@my.server.ip
 
 ```bash
 ansible-galaxy install -r requirements.yml
-ansible-playbook -i inventories/myproject commcare_analytics.yml --vault-password-file ~/myproject-ansible-vault -vv
+ansible-playbook -i environments/your_environment/inventory commcare_analytics.yml --vault-password-file ~/path/to/vault/password/file -e @./environments/your_environment/vault.yml -vv
 ```
 
 This should install everything required to run CommCare Analytics!
