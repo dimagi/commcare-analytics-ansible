@@ -12,7 +12,6 @@
     group: "{{ postgresql_user }}"
     owner: "{{ postgresql_user }}"
     mode: 0600
-    backup: yes
   tags:
     - postgres_backup
 
@@ -24,7 +23,6 @@
     group: "{{ postgresql_user }}"
     owner: "{{ postgresql_user }}"
     mode: 0700
-    backup: yes
   tags:
     - postgres_backup
 
@@ -32,9 +30,9 @@
   become: yes
   cron:
     name: "Backup Postgres Weekly"
-    job: "sh /usr/local/bin/create_postgres_dump.sh"
+    job: "bash /usr/local/bin/create_postgres_dump.sh"
     minute: "0"
-    hour: "12"
+    hour: "8"
     weekday: "0"
     user: "{{ postgresql_user }}"
   tags:

@@ -89,5 +89,5 @@ certbot_domains:
 
 # Database backup variables
 postgresql_backup_dir: "/var/tmp"
-postgresql_backup_db_list: "commcare_analytics, superset"
+postgresql_backup_db_list: "commcare_analytics superset"
 postgresql_user_home_dir: "/var/lib/postgresql"
