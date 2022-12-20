@@ -40,7 +40,7 @@ fi
 
 #Upload to S3
 log "Uploading to S3";
-aws s3api put-object --bucket "{{ vault_s3_bucket }}" --key $BACKUP_NAME --server-side-encryption AES256 --body $BACKUP_DIRECTORY.tar.zst
+aws s3api put-object --bucket "{{ secrets.s3_bucket }}" --key $BACKUP_NAME --server-side-encryption AES256 --body $BACKUP_DIRECTORY.tar.zst
 if [[ $? -ne 0 ]] ; then
     log "Upload was not successful.";
     exit 1
