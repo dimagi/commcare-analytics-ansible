@@ -100,3 +100,6 @@
 
 - include_tasks: logrotate.yml
   tags: logging
+
+- include_tasks: pg_backup.yml
+  tags: postgres_backup

@@ -60,7 +60,7 @@ postgresql_allow_remote_connections: no
 
 default_db_name: "{{ app_name }}"
 default_db_user: "{{ app_name }}"
-default_db_password: "secret"
+default_db_password: "{{ secrets.db_password }}"
 default_db_host: 127.0.0.1
 default_db_port: 5432
 
@@ -86,3 +86,8 @@ certbot_admin_email: admin@example.com
 certbot_domains:
   - example.com
   - www.example.com
+
+# Database backup variables
+postgresql_backup_dir: "/var/tmp"
+postgresql_backup_db_list: "commcare_analytics superset"
+postgresql_user_home_dir: "/var/lib/postgresql"
