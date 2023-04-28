@@ -13,7 +13,7 @@ echo "Starting superset as `whoami`"
 gunicorn \
       -w 10 \
       -k gevent \
-      --timeout 120 \
+      --timeout {{gunicorn_timeout_seconds}} \
       --limit-request-line 0 \
       --limit-request-field_size 0 \
       --statsd-host localhost:8125 \
