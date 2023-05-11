@@ -6,6 +6,7 @@ base_python_package: "python3"
 apt_update_cache: yes
 
 ssl_enabled: false
+env: superset
 app_name: commcare_analytics
 app_user: "{{ vault_ansible_user }}"
 home_dir: /home/{{ app_user }}
@@ -43,13 +44,11 @@ superset_ketchup_version: "master"
 # AUTH_LDAP : Is for LDAP
 # AUTH_OAUTH : Is for oAuth
 # AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
-superset_auth_type: AUTH_DB
+superset_auth_type: AUTH_OAUTH
 superset_oauth_providers:
 
 # allow user self registration
 superset_auth_user_registration: true
-# default role when user self registers
-superset_auth_user_registration_role: Admin
 # Re-evaluate user's roles at each login
 superset_auth_roles_sync_at_login: true
 
