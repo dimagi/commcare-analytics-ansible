@@ -1,31 +1,26 @@
 Production Environments
 =======================
 
-This page describes creating and managing production inventory files.
-For details on deploying a production environment, see the [deployment page](/deployment).
+This page describes creating and managing production environments.
 
 ### Directory overview
 
-Production environments live in the `inventories/` folder.
+Environments live in the `environments/` folder.
 
-To add a new production environment you can follow the steps below, replacing `myproject` with your project name.
+To add a new environment you can follow the steps below, replacing `your_environment` with your environment name.
 
 
-Dimagi-managed production environments are maintained in the private `inventories/dimagi/` submodule.
-Dimagi developers should see [the dimagi page](/dimagi) for details on working with this submodule
-in Dimagi-managed environments.
+### Initialize environment directory
 
-### Initialize Inventory Folder
-
-First create a new inventory folder for your environment.
+First create a new environment folder for your environment.
 This is where your project-specific configuration will live. 
 
 ```bash
-cp -r inventories/example inventories/myproject
+cp -r environments/example environments/your_environment
 ```
 ### Update Inventory Files
 
-Edit the `hosts.yml` and `vars.yml` files with your project-specific changes.
+Edit the `inventory.ini` and `vault.yml` files with your project-specific details.
 
 
 ### Ansible Vault
@@ -33,52 +28,23 @@ Edit the `hosts.yml` and `vars.yml` files with your project-specific changes.
 Production environments should use [Ansible Vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html) to manage secrets.
 That page has lots of details about editing and using files with Vault.
 
-The example environment includes a vault file which you can edit using:
+The example environment includes a vault file which you can edit. When you're done adding the necessary secrets, you must encrypt the vault file. It will ask you for a password when you run the encrypt command:
 
 ```python
-ansible-vault edit ./inventories/example/group_vars/commcare_analytics/vault.yml
+ansible-vault encrypt vault.yml
 ```
 
-And entering the password `secret`.
-You should remove this file and create a new one for your environment following the instructions below.
+You can generate a good random key from a command line:
 
-### Initial Vault Setup
+```
+openssl rand -base64 48
+```
 
-The following one-time setup is used to generate keys / files for Ansible Vault.
-
-#### Generate Vault Key
+Your `vault.yml` file should now be replaced by a digested value and no secret data should be revealed. You can edit the secret values again using the following:
 
 ```bash
-openssl rand -base64 2048 > ~/myproject-ansible-vault
-```
-
-#### Create Vault Vars File
-```bash
-ansible-vault create --vault-password-file ~/myproject-ansible-vault ./inventories/myproject/group_vars/commcare_analytics/vault.yml
-```
-
-Add your secrets here. E.g.
-
-```
-# My Project Vault File
-
-vault_default_db_password: SuperSecret
-vault_django_secret_key: als0_SEcr3t
-```
-
-(You can generate a good random key from a command line:)
-```
-$ python3 -c 'import string
-import secrets
-chars = string.ascii_letters + string.digits
-key = "".join(secrets.choice(chars) for x in range(64))
-print(key)'
-```
-
-You run the following to edit the file later:
-
-```bash
-ansible-vault edit --vault-password-file ~/myproject-ansible-vault ./inventories/myproject/group_vars/commcare_analytics/vault.yml
+# You can store your password in a file somewhere on the control machine
+ansible-vault edit --vault-password-file ~/path/to/vault/password/file ./environments/your_environment/vault.yml
 ```
 
 #### SSH access
@@ -107,7 +73,7 @@ ssh -i ~/myproject.pem ubuntu@my.server.ip
 
 ```bash
 ansible-galaxy install -r requirements.yml
-ansible-playbook -i inventories/myproject commcare_analytics.yml --vault-password-file ~/myproject-ansible-vault -vv
+ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --vault-password-file ~/path/to/vault/password/file -e @./environments/your_environment/vault.yml -vv
 ```
 
 This should install everything required to run CommCare Analytics!
@@ -142,8 +108,17 @@ after enabling SSL support.
 For existing environments you should get the relevant `myproject-ansible-vault` and `myproject.pem`
 files from a project team member and jump straight to deployment.
 
-To deploy, run the following *from your local machine*.
+To deploy, run the following *from your local/control machine*.
 
 ```bash
-ansible-playbook -i inventories/myproject commcare_analytics.yml --limit myserver --vault-password-file ~/myproject-ansible-vault -vv --tags=deploy
+ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --limit myserver --vault-password-file ~/path/to/vault/password/file -vv --tags="deploy" -e @./environments/your_environment/vault.yml
+```
+
+## Database backups
+Database backups are pushed to AWS S3. If you want to enable database backups, you can run the following command that will add a cronjob for the `postgres` user to create backups every Sunday at 8AM UCT.
+
+Please make sure that the S3 details in the `vault.yml` file is updated.
+
+```bash
+ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --vault-password-file ~/path/to/vault/password/file --tags="postgres_backup,aws_setup" -e @./environments/your_environment/vault.yml
 ```
