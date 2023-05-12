@@ -73,7 +73,7 @@ ssh -i ~/myproject.pem ubuntu@my.server.ip
 
 ```bash
 ansible-galaxy install -r requirements.yml
-ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --vault-password-file ~/path/to/vault/password/file -e @./environments/your_environment/vault.yml -vv
+ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml -e @./environments/your_environment/vault.yml -e @./environments/your_environment/vars.yml --ask-vault-password -u ubuntu --tags=mynew
 ```
 
 This should install everything required to run CommCare Analytics!

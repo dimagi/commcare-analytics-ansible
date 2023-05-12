@@ -103,3 +103,6 @@
 
 - include_tasks: pg_backup.yml
   tags: postgres_backup
+
+- include_tasks: redis.yml
+  tags: redis

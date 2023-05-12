@@ -28,6 +28,7 @@ superset_ssl_enabled: false
 superset_db_name: "superset"
 superset_project_dir: "{{ base_dir }}/superset"
 superset_virtualenv_dir: "{{ base_dir }}/.virtualenvs/superset"
+superset_shared_dir: "{{ base_dir }}/superset/shared_dir"
 superset_username: admin
 superset_firstname: Admin
 superset_lastname: User
@@ -35,7 +36,6 @@ superset_email: email@example.com
 superset_password: "{{ default_superset_password }}"
 superset_public_host: 100.100.100.100
 
-superset_ketchup_git_url: "https://github.com/dimagi/superset-patchup.git"
 superset_ketchup_version: "master"
 
 # authentication configuration
@@ -57,9 +57,8 @@ postgresql_version: 12
 postgresql_user: postgres
 postgresql_allow_remote_connections: no
 
-default_db_name: "{{ app_name }}"
 default_db_user: "{{ app_name }}"
-default_db_password: "{{ secrets.db_password }}"
+default_db_password: "{{ vault_db_password }}"
 default_db_host: 127.0.0.1
 default_db_port: 5432
 

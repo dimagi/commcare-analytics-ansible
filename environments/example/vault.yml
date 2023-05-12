@@ -1,6 +1,5 @@
 vault_ansible_user: ubuntu
-vault_meta_db_password: gHBmNa4uqmL2s57kto
-vault_cchq_data_db_password: jXs5E4rrZaUhyjHxbQ
+vault_db_password: gHBmNa4uqmL2s57kto
 vault_default_superset_password: 9GaYm61bqmmPGKIYYbXGkQlEFXGmLPi3
 vault_mapbox_api_key: mykey
 

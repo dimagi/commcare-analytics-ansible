@@ -59,7 +59,7 @@
   become: yes
   become_user: "{{ postgresql_user }}"
   postgresql_db:
-    name: "{{ default_db_name }}"
+    name: "{{ superset_db_name }}"
     encoding: 'UTF-8'
     lc_collate: 'en_US.UTF-8'
     lc_ctype: 'en_US.UTF-8'
@@ -70,7 +70,30 @@
   become: yes
   become_user: "{{ postgresql_user }}"
   postgresql_user:
-    db: "{{ default_db_name }}"
+    db: "{{ superset_db_name }}"
+    name: "{{ default_db_user }}"
+    password: "{{ default_db_password }}"
+    encrypted: yes
+    priv: ALL
+    state: present
+  tags: postgres
+
+- name: Ensure the cchq data database is created.
+  become: yes
+  become_user: "{{ postgresql_user }}"
+  postgresql_db:
+    name: "{{ cchq_db_name }}"
+    encoding: 'UTF-8'
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
+    template: 'template1'
+    state: present
+
+- name: Ensure the default user has access to the database.
+  become: yes
+  become_user: "{{ postgresql_user }}"
+  postgresql_user:
+    db: "{{ cchq_db_name }}"
     name: "{{ default_db_user }}"
     password: "{{ default_db_password }}"
     encrypted: yes
