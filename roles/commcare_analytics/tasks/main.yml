@@ -102,6 +102,7 @@
   tags: logging
 
 - include_tasks: pg_backup.yml
+  when: postgresql_backup_enabled
   tags: postgres_backup
 
 - include_tasks: redis.yml
