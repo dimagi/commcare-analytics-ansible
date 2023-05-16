@@ -6,6 +6,7 @@ base_python_package: "python3"
 apt_update_cache: yes
 
 ssl_enabled: false
+env: superset
 app_name: commcare_analytics
 app_user: "{{ vault_ansible_user }}"
 home_dir: /home/{{ app_user }}
@@ -27,6 +28,7 @@ superset_ssl_enabled: false
 superset_db_name: "superset"
 superset_project_dir: "{{ base_dir }}/superset"
 superset_virtualenv_dir: "{{ base_dir }}/.virtualenvs/superset"
+superset_shared_dir: "{{ base_dir }}/superset/shared_dir"
 superset_username: admin
 superset_firstname: Admin
 superset_lastname: User
@@ -34,7 +36,6 @@ superset_email: email@example.com
 superset_password: "{{ default_superset_password }}"
 superset_public_host: 100.100.100.100
 
-superset_ketchup_git_url: "https://github.com/dimagi/superset-patchup.git"
 superset_ketchup_version: "master"
 
 # authentication configuration
@@ -43,13 +44,11 @@ superset_ketchup_version: "master"
 # AUTH_LDAP : Is for LDAP
 # AUTH_OAUTH : Is for oAuth
 # AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
-superset_auth_type: AUTH_DB
+superset_auth_type: AUTH_OAUTH
 superset_oauth_providers:
 
 # allow user self registration
 superset_auth_user_registration: true
-# default role when user self registers
-superset_auth_user_registration_role: Admin
 # Re-evaluate user's roles at each login
 superset_auth_roles_sync_at_login: true
 
@@ -58,9 +57,8 @@ postgresql_version: 12
 postgresql_user: postgres
 postgresql_allow_remote_connections: no
 
-default_db_name: "{{ app_name }}"
 default_db_user: "{{ app_name }}"
-default_db_password: "{{ secrets.db_password }}"
+default_db_password: "{{ vault_db_password }}"
 default_db_host: 127.0.0.1
 default_db_port: 5432
 
@@ -89,6 +87,7 @@ certbot_domains:
   - www.example.com
 
 # Database backup variables
+postgresql_backup_enabled: false
 postgresql_backup_dir: "/var/tmp"
 postgresql_backup_db_list: "commcare_analytics superset"
 postgresql_user_home_dir: "/var/lib/postgresql"

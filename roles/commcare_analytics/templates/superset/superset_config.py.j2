@@ -1,86 +1,102 @@
-from flask_appbuilder.security.manager import AUTH_DB, AUTH_OAUTH
-from superset_patchup.oauth import CustomSecurityManager
+import hq_superset
 
-# The SQLAlchemy connection string.
+from flask_appbuilder.security.manager import AUTH_OAUTH, AUTH_DB
+from superset import config as superset_config
+
+
+
+hq_superset.patch_superset_config(superset_config)
+
+
 SQLALCHEMY_DATABASE_URI = 'postgresql://{{ default_db_user }}:{{ default_db_password }}@{{ default_db_host }}:{{ default_db_port }}/{{ superset_db_name }}'
-PUBLIC_ROLE_LIKE_GAMMA = True
-MAPBOX_API_KEY = 'mapbox_api_key'
 
-# ----------------------------------------------------
-# AUTHENTICATION CONFIG
-# ----------------------------------------------------
-# The authentication type
-# AUTH_OID : Is for OpenID
-# AUTH_DB : Is for database (username/password()
-# AUTH_LDAP : Is for LDAP
-# AUTH_OAUTH : Is for oAuth
-# AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
+SECRET_KEY = "{{vault_superset_secret_key}}"
+
 AUTH_TYPE = {{ superset_auth_type }}
 
-{% if superset_oauth_providers %}
+
 OAUTH_PROVIDERS = [
-{% for provider in superset_oauth_providers %}
-{
-    'name': '{{ provider.name }}',
-    'icon': '{{ provider.icon }}',
-    {% if provider.token_key is defined %}
-    'token_key': '{{ provider.token_key }}',
-    {% endif %}
-    'remote_app': {
-        {% if provider.consumer_key is defined %}
-        'consumer_key': {{ provider.consumer_key }},
-        'consumer_secret': {{ provider.consumer_secret }},
-        {% endif %}
-        {% if provider.client_id is defined %}
-        'client_id': {{ provider.client_id }},
-        'client_secret': {{ provider.client_secret }},
-        {% endif %}
-        {% if provider.api_base_url is defined %}
-        'api_base_url': '{{ provider.api_base_url }}',
-        {% endif %}
-        {% if provider.base_url is defined %}
-        'base_url': '{{ provider.base_url }}',
-        {% endif %}
-        {% if provider.client_kwargs is defined %}
-        # if provided this should be a python dict
-        'client_kwargs': {{ provider.client_kwargs }},
-        {% endif %}
-        {% if provider.request_token_params is defined %}
-        # if provided this should be a python dict
-        'request_token_params': {{ provider.request_token_params }},
-        {% endif %}
-        {% if provider.request_token_url is defined %}
-        'request_token_url': '{{ provider.request_token_url }}',
-        {% endif %}
-        {% if provider.access_token_method is defined %}
-        'access_token_method': '{{ provider.access_token_method }}',
-        {% endif %}
-        {% if provider.access_token_headers is defined %}
-        # if provided this should be a python dict
-        'access_token_headers': {{ provider.access_token_headers }},
-        {% endif %}
-        {% if provider.access_token_params is defined %}
-        # if provided this should be a python dict
-        'access_token_params': {{ provider.access_token_params }},
-        {% endif %}
-        {% if provider.custom_redirect_url is defined %}
-        'custom_redirect_url': '{{ provider.custom_redirect_url }}',
-        {% endif %}
-        'access_token_url': '{{ provider.access_token_url }}',
-        'authorize_url': '{{ provider.authorize_url }}'
+    {
+        'name': 'commcare',
+        'token_key':'{{oauth_creds.token_key}}',
+        'remote_app': {
+            'client_id': '{{oauth_creds.client_id}}',
+            'client_secret': '{{oauth_creds.client_secret}}',
+            'api_base_url': '{{oauth_creds.base_url}}',
+            'access_token_url': '{{oauth_creds.base_url}}oauth/token/',
+            'authorize_url': '{{oauth_creds.base_url}}oauth/authorize/',
+            'client_kwargs':{
+                'scope': 'reports:view access_apis'
+            },
+        }
     }
-}{% if loop.index != loop.length %},{% endif %}
-{% endfor %}
 ]
 
-{% endif %}  # end superset_oauth_providers if block
 
+# Will allow user self registration, allowing to create Flask users from Authorized User
+AUTH_USER_REGISTRATION = True
 
 # The default user self registration role
-AUTH_USER_REGISTRATION_ROLE = '{{ superset_auth_user_registration_role }}'
-# Enable automatic creation of user account after first time oauth is done successfully
-AUTH_USER_REGISTRATION = {{ superset_auth_user_registration }}
-# If true, we replace ALL the user's roles each login. If false, we create the roles on registration
-AUTH_ROLES_SYNC_AT_LOGIN = {{ superset_auth_roles_sync_at_login }}
+AUTH_USER_REGISTRATION_ROLE = "Gamma"
 
-CUSTOM_SECURITY_MANAGER = CustomSecurityManager
+SUPERSET_WEBSERVER_ADDRESS = "{{superset_public_host}}"
+
+AUTH_USER_ADDITIONAL_ROLES = ["sql_lab"]
+
+MAPBOX_API_KEY = "{{vault_mapbox_api_key}}"
+
+FEATURE_FLAGS = {
+    "DASHBOARD_CROSS_FILTERS": True,
+    "DASHBOARD_NATIVE_FILTERS": True,
+    "DASHBOARD_NATIVE_FILTERS_SET": True,
+    "DASHBOARD_FILTERS_EXPERIMENTAL": True,
+}
+
+
+# This is where async UCR imports are stored temporarily
+SHARED_DIR = '{{superset_shared_dir}}'
+
+CACHE_CONFIG = {
+      'CACHE_TYPE': 'RedisCache',
+      'CACHE_DEFAULT_TIMEOUT': 300,
+      'CACHE_KEY_PREFIX': 'superset_',
+      'CACHE_REDIS_URL': 'redis://localhost:6379/0'
+}
+
+from cachelib.redis import RedisCache
+RESULTS_BACKEND = RedisCache(
+    host='localhost', port=6379, key_prefix='superset_results'
+)
+
+from celery.schedules import crontab
+
+class CeleryConfig(object):
+    broker_url = 'redis://localhost:6379/0'
+    imports = (
+        'superset.sql_lab',
+        'superset.tasks',
+        'hq_superset.tasks',
+    )
+    result_backend = 'redis://localhost:6379/0'
+    worker_log_level = 'DEBUG'
+    worker_prefetch_multiplier = 10
+    task_acks_late = True
+    task_annotations = {
+        'sql_lab.get_sql_results': {
+            'rate_limit': '100/s',
+        },
+        'email_reports.send': {
+            'rate_limit': '1/s',
+            'time_limit': 120,
+            'soft_time_limit': 150,
+            'ignore_result': True,
+        },
+    }
+    beat_schedule = {
+        'email_reports.schedule_hourly': {
+            'task': 'email_reports.schedule_hourly',
+            'schedule': crontab(minute=1, hour='*'),
+        },
+    }
+
+CELERY_CONFIG = CeleryConfig

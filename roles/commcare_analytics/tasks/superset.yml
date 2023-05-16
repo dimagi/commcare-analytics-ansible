@@ -1,31 +1,3 @@
-# Database
-- name: Ensure the superset  database is created.
-  become: yes
-  become_user: "{{ postgresql_user }}"
-  postgresql_db:
-    name: "{{ superset_db_name }}"
-    encoding: 'UTF-8'
-    lc_collate: 'en_US.UTF-8'
-    lc_ctype: 'en_US.UTF-8'
-    template: 'template1'
-    state: present
-  tags: superset
-  vars:
-    allow_world_readable_tmpfiles: true
-
-- name: Ensure the default user has access to the database.
-  become: yes
-  become_user: "{{ postgresql_user }}"
-  postgresql_user:
-    db: "{{ superset_db_name }}"
-    name: "{{ default_db_user }}"
-    password: "myPassword"
-    encrypted: yes
-    priv: ALL
-    state: present
-  tags: superset
-
-
 # Virtualenv
 
 - name: Install pip
@@ -63,23 +35,22 @@
     backup: yes
   tags: superset
 
-- name: Install superset patchup (ketchup)
-  pip:
-    name: 'git+{{ superset_ketchup_git_url }}@{{ superset_ketchup_version }}'
-    state: forcereinstall
-    virtualenv: "{{ superset_virtualenv_dir }}"
-  tags: superset
-
 - name: Install packages required by Superset in the virtualenv.
   pip:
     virtualenv: "{{ superset_virtualenv_dir }}"
     name:
-      - apache-superset
       - psycopg2-binary
       - email_validator
       - gunicorn
       - gevent
       - MarkupSafe==2.0.1
+  tags: superset
+
+- name: Install hq_superset
+  pip:
+    name: 'git+https://github.com/dimagi/hq_superset@{{ superset_ketchup_version }}'
+    state: forcereinstall
+    virtualenv: "{{ superset_virtualenv_dir }}"
   tags: superset
 
 - name: Create run directory
@@ -106,6 +77,15 @@
 - name: Create {{ superset_project_dir }}.
   file:
     path: "{{ superset_project_dir }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: 0750
+    state: directory
+  tags: superset
+
+- name: Create {{ superset_shared_dir }}.
+  file:
+    path: "{{ superset_shared_dir }}"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
     mode: 0750
@@ -156,6 +136,23 @@
     backup: yes
   tags: superset
 
+- name: Create the Celery default start script.
+  template:
+    src: superset/celery_default_start_script.j2
+    dest: "{{ superset_virtualenv_dir }}/bin/celery_default_start"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: 0750
+    backup: yes
+  tags: supervisor
+
+- name: Create the Celery Supervisor config file.
+  template:
+    src: superset/celery_default_supervisor_config.j2
+    dest: /etc/supervisor/conf.d/{{ app_name }}_celery_default.conf
+    backup: yes
+  tags: superset
+
 - name: Create log directory "{{ log_dir }}"
   file:
     path: "{{ log_dir }}"
@@ -174,6 +171,7 @@
     mode: 0644
   with_items:
     - supervisor.log
+    - celery.log
   tags: superset
 
 - name: Re-read the Superset supervisor config files.
@@ -182,6 +180,7 @@
     state: present
   with_items:
     - superset
+    - "{{ app_name }}_celery_default"
   tags: superset
 
 - name: Restart the Superset Supervisor process.
@@ -190,6 +189,7 @@
     state: restarted
   with_items:
     - superset
+    - "{{ app_name }}_celery_default"
   tags: superset
 
 

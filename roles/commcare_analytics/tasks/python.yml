@@ -14,6 +14,7 @@
       - "{{virtualenv_python_version}}-lib2to3"
     purge: yes
     state: absent
+  when: ansible_distribution_version == '20.04'
 
 - name: Install the appropriate Python version
   apt:
