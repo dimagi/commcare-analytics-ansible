@@ -1,0 +1,21 @@
+---
+
+superset_enabled: yes
+superset_public_host: "commcare-analytics-india.dimagi.com"
+superset_username: idtech
+superset_firstname: Admin
+superset_lastname: User
+superset_email: devops+idtech@dimagi.com
+superset_ssl_enabled: false
+superset_db_name: superset_meta
+cchq_db_name: superset_cchq_data
+
+project_timezone: 'Asia/Kolkata'
+
+# Superset Auth settings
+oauth_creds:
+  token_key: 'access_token'
+  client_id: "{{ vault_oauth_client_id }}"
+  client_secret: "{{ vault_oauth_client_secret }}"
+  base_url: 'https://india.commcarehq.org/'
+...
