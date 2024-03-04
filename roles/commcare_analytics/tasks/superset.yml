@@ -46,9 +46,9 @@
       - MarkupSafe==2.0.1
   tags: superset
 
-- name: Install hq_superset
+- name: Install CommCare Analytics
   pip:
-    name: 'git+https://github.com/dimagi/hq_superset@{{ superset_ketchup_version }}'
+    name: 'git+https://github.com/dimagi/commcare-analytics@{{ superset_ketchup_version }}'
     state: forcereinstall
     virtualenv: "{{ superset_virtualenv_dir }}"
   tags: superset
