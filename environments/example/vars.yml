@@ -8,6 +8,7 @@ superset_lastname: User
 superset_email: devops+soltech@dimagi.com
 superset_ssl_enabled: no
 superset_db_name: superset_meta
+oauth2_db_name: superset_oauth2
 cchq_db_name: superset_cchq_data
 
 project_timezone: 'Asia/Kolkata'
