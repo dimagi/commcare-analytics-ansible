@@ -15,10 +15,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "commcare_analytics", primary: true do |obj|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    obj.vm.box = "bento/ubuntu-18.04"
+    obj.vm.box = "bento/ubuntu-22.04"
     obj.vm.hostname = "dev-commcare-analytics"
     # obj.vm.boot_timeout = 600
-    obj.vm.network "private_network", ip: "192.168.11.10"
+    obj.vm.network "private_network", ip: "192.168.56.10"
 
     obj.ssh.username = "vagrant"
     obj.ssh.forward_agent = true
@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "ansible" do |ansible|
       ansible.playbook = "commcare_analytics.yml"
       ansible.galaxy_role_file = "requirements.yml"
-      ansible.inventory_path = "inventories/dev"
+      ansible.inventory_path = "environments/example"
       ansible.galaxy_roles_path = "~/.ansible/roles"
       ansible.galaxy_command = "ansible-galaxy install -r %{role_file} --roles-path=%{roles_path}"
       ansible.limit = "local1"
