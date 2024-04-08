@@ -44,11 +44,11 @@ mkdir ~/.ssh
 chmod 755 ~/.ssh
 ```
 
-Add an `authorized_keys` file and make sure to set permissions to 700.
+Add an `authorized_keys` file and make sure to set permissions to 600.
 
 ```bash
 touch ~/.ssh/authorized_keys
-chmod 700 ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
 ```
 
 
