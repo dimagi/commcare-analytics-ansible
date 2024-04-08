@@ -30,13 +30,13 @@ That page has lots of details about editing and using files with Vault.
 
 The example environment includes a vault file which you can edit. When you're done adding the necessary secrets, you must encrypt the vault file. It will ask you for a password when you run the encrypt command:
 
-```python
+```bash
 ansible-vault encrypt vault.yml
 ```
 
 You can generate a good random key from a command line:
 
-```
+```bash
 openssl rand -base64 48
 ```
 
@@ -67,7 +67,9 @@ ssh -i ~/myproject.pem ubuntu@my.server.ip
 
 *On the remote server*
 
-`sudo hostnamectl set-hostname myproject-server`
+```bash
+sudo hostnamectl set-hostname myproject-server
+```
 
 #### Run Installation
 
@@ -82,13 +84,13 @@ This should install everything required to run CommCare Analytics!
 
 HTTPS set up is currently not supported by this tool. To set up SSL, login to your machine and install certbot:
 
-```
+```bash
 sudo apt install certbot python3-certbot-nginx
 ```
 
 Then run:
 
-```
+```bash
 sudo certbot --nginx
 ```
 
