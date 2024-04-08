@@ -16,7 +16,8 @@ First create a new environment folder for your environment.
 This is where your project-specific configuration will live. 
 
 ```bash
-cp -r environments/example environments/your_environment
+export ENV=your_environment
+cp -r environments/example environments/$ENV
 ```
 ### Update Inventory Files
 
@@ -44,7 +45,8 @@ Your `vault.yml` file should now be replaced by a digested value and no secret d
 
 ```bash
 # You can store your password in a file somewhere on the control machine
-ansible-vault edit --vault-password-file ~/path/to/vault/password/file ./environments/your_environment/vault.yml
+ansible-vault edit --vault-password-file ~/path/to/vault/password/file \
+    environments/$ENV/vault.yml
 ```
 
 #### SSH access
@@ -75,7 +77,10 @@ sudo hostnamectl set-hostname myproject-server
 
 ```bash
 ansible-galaxy install -r requirements.yml
-ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml -e @./environments/your_environment/vault.yml -e @./environments/your_environment/vars.yml --ask-vault-password -u ubuntu --tags=mynew
+ansible-playbook -i environments/$ENV/inventory.ini commcare_analytics.yml \
+    -e @environments/$ENV/vault.yml \
+    -e @environments/$ENV/vars.yml \
+    --ask-vault-password -u ubuntu --tags=mynew
 ```
 
 This should install everything required to run CommCare Analytics!
@@ -113,7 +118,11 @@ files from a project team member and jump straight to deployment.
 To deploy, run the following *from your local/control machine*.
 
 ```bash
-ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --limit myserver --vault-password-file ~/path/to/vault/password/file -vv --tags="deploy" -e @./environments/your_environment/vault.yml
+ansible-playbook -i environments/$ENV/inventory.ini commcare_analytics.yml \
+    --limit myserver \
+    --vault-password-file ~/path/to/vault/password/file \
+    -e @./environments/$ENV/vault.yml \
+    -vv --tags="deploy"
 ```
 
 ## Database backups
@@ -122,5 +131,8 @@ Database backups are pushed to AWS S3. If you want to enable database backups, y
 Please make sure that the S3 details in the `vault.yml` file is updated.
 
 ```bash
-ansible-playbook -i environments/your_environment/inventory.ini commcare_analytics.yml --vault-password-file ~/path/to/vault/password/file --tags="postgres_backup,aws_setup" -e @./environments/your_environment/vault.yml
+ansible-playbook -i environments/$ENV/inventory.ini commcare_analytics.yml \
+    --vault-password-file ~/path/to/vault/password/file \
+    --tags="postgres_backup,aws_setup" \
+    -e @./environments/$ENV/vault.yml
 ```
