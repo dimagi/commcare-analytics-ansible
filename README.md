@@ -32,14 +32,14 @@ To build the docs locally,
 
 5. To serve the docs locally, you can use Python's webserver:
    ```shell
-   $ cd _builds/html/
+   $ cd _build/html/
    $ python -m http.server 9000
    $ firefox 'http://localhost:9000/'
    ```
 
-   Alternatively, open `_builds/html/index.html` in a browser:
+   Alternatively, open `_build/html/index.html` in a browser:
    ```shell
-   $ firefox _builds/html/index.html
+   $ firefox _build/html/index.html
    ```
 
 
