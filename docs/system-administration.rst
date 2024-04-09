@@ -28,17 +28,20 @@ Common Tasks
 Some of the common tasks needed to manage an environment.
 
 
-Deploying Changes
-^^^^^^^^^^^^^^^^^
+..
+    TODO: Make this true:
 
-You may wish to deploy updates to the server, for example to pull the
-latest changes from the CommCare analytics code.
+    Deploying Changes
+    ^^^^^^^^^^^^^^^^^
 
-The command to deploy updates is::
+    You may wish to deploy updates to the server, for example to pull the
+    latest changes from the CommCare analytics code.
 
-    $ ansible-playbook -i inventories/yourapp commcare_analytics.yml
-          --vault-password-file /path/to/password/file \
-          -vv --tags=deploy
+    The command to deploy updates is::
+
+        $ ansible-playbook -i inventories/yourapp commcare_analytics.yml
+              --vault-password-file /path/to/password/file \
+              -vv --tags=deploy
 
 
 Accessing the Virtual Environment
