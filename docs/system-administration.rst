@@ -28,19 +28,6 @@ Common Tasks
 Some of the common tasks needed to manage an environment.
 
 
-Enabling/Disabling Public Sign Ups
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Sign ups are currently configured via the Django ``ACCOUNT_ADAPTER``
-setting. To enable anyone to sign up, you should set it to
-``EmailAsUsernameAdapter``. To disable public account creation, set it
-to ``NoNewUsersAccountAdapter``. This behavior is controlled by the
-``django_allow_public_signups`` Ansible variable.
-
-If public sign ups are disabled, then only superusers can create new
-accounts, via the Django admin UI or command line.
-
-
 Deploying Changes
 ^^^^^^^^^^^^^^^^^
 
@@ -84,17 +71,6 @@ Other Useful commands
 +----------------------------------+------------------------------------------+
 | Restart nginx                    | ``sudo service nginx restart``           |
 +----------------------------------+------------------------------------------+
-
-
-Checking for Stuck Exports
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The logs for running exports don't show up in the UI until they
-complete. The easiest way to see if an export is still running or if it
-is stuck/was killed is to login to the server and just run a command to
-see what "commcare-export" processes are running. e.g. ::
-
-    $ ps -ef | grep commcare-export
 
 
 Database Management
