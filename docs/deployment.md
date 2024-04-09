@@ -37,18 +37,14 @@ Some other things you might want to do on production.
 
 #### Setting up passwordless SSH
 
-Create `.ssh` directory in the user's home and make sure to set the permissions to 755.
+Create a key pair. Accept the default filename. When prompted for a
+passphrase, hit Enter for no passphrase. Append the public key to the
+`authorized_keys` file.
 
 ```bash
-mkdir ~/.ssh
-chmod 755 ~/.ssh
-```
-
-Add an `authorized_keys` file and make sure to set permissions to 600.
-
-```bash
-touch ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
+$ ssh-keygen
+$ cd ~/.ssh/
+$ cat id_rsa.pub >> authorized_keys
 ```
 
 
