@@ -22,10 +22,19 @@ The most important ones are summarized on the
 `what's installed </whats-installed/>`_ page.
 
 
-Common Tasks
-------------
+Steady-State Maintenance Tasks
+------------------------------
 
-Some of the common tasks needed to manage an environment.
+Working with Superset
+^^^^^^^^^^^^^^^^^^^^^
+
+In order to run any Superset management commands (for example
+``superset db upgrade``) you must enter the Superset environment and
+*manually run the postactivate script*. This is required to set the
+project-specific environment variables. ::
+
+    $ source ~/www/.virtualenvs/superset/bin/activate
+    $ source ~/www/.virtualenvs/superset/bin/postactivate
 
 
 ..
@@ -39,28 +48,30 @@ Some of the common tasks needed to manage an environment.
 
     The command to deploy updates is::
 
-        $ ansible-playbook -i inventories/yourapp commcare_analytics.yml
-              --vault-password-file /path/to/password/file \
+        $ ansible-playbook -i environments/$ENV/inventory.ini commcare_analytics.yml \
+              -e @environments/$ENV/vault.yml \
+              -e @environments/$ENV/vars.yml \
+              --ask-vault-password -u ubuntu
               -vv --tags=deploy
 
 
-Accessing the Virtual Environment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Database Backups
+^^^^^^^^^^^^^^^^
 
-To access the virtual environments for superset, run the following
-commands::
+Database backups are pushed to AWS S3. If you want to enable database
+backups, you can run the following command that will add a cronjob for
+the ``postgres`` user to create backups every Sunday at 08:00 UTC.
 
-    $ source <venv>/bin/activate
-    $ source <venv>/bin/postactivate
+Please make sure that the S3 details in the ``vault.yml`` file are
+up-to-date. ::
 
-On most servers the superset <venv> is at
-``~/www/.virtualenvs/superset``.
+    $ ansible-playbook -i environments/$ENV/inventory.ini commcare_analytics.yml \
+        --vault-password-file ~/path/to/vault/password/file \
+        --tags="postgres_backup,aws_setup" \
+        -e @./environments/$ENV/vault.yml
 
-The second command is required to set the project-specific environment
-variables to the correct values.
 
-
-Other Useful commands
+Other Useful Commands
 ^^^^^^^^^^^^^^^^^^^^^
 
 +----------------------------------+------------------------------------------+
