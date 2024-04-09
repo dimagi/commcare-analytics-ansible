@@ -16,6 +16,5 @@ This documentation site also includes a :doc:`guide for system administrators <s
    whats-installed
    getting-started
    production
-   deployment
    migration
    system-administration
