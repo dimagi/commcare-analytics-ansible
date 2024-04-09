@@ -10,7 +10,7 @@ superset_ssl_enabled: yes
 superset_db_name: superset_meta
 cchq_db_name: superset_cchq_data
 
-project_timezone: 'Asia/Kolkata'
+project_timezone: 'US/Pacific'
 
 # Superset Auth settings
 oauth_creds:
