@@ -1,18 +1,7 @@
 # Virtualenv
 
-- name: Install pip
-  apt:
-    name: python3-pip
-    state: present
-  tags: packages
-
-- name: Install virtualenv.
-  pip:
-    name: virtualenv
-  tags: packages
-
 - name: Create the superset virtualenv.
-  command: virtualenv -p {{ virtualenv_python_version }} {{ superset_virtualenv_dir }}
+  command: "{{ virtualenv_python_version }} -m venv {{ superset_virtualenv_dir }}"
   args:
     creates: "{{ superset_virtualenv_dir }}/bin/"
   tags: superset

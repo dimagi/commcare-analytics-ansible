@@ -11,5 +11,6 @@
     name:
       - "{{virtualenv_python_version}}"
       - "{{virtualenv_python_version}}-dev"  # psycopg2 dependency
+      - "{{virtualenv_python_version}}-venv"
     update_cache: "{{ apt_update_cache }}"
     state: present
