@@ -7,7 +7,7 @@ project, which contains tools for setting up and deploying `commcare-analytics <
 We use the `Ansible <https://www.ansible.com/>`_ automation framework to provide one-click set up and management
 of the commcare-analytics application a server.
 
-This documentation site also includes a `guide for system administrators </system-administration>`_
+This documentation site also includes a :doc:`guide for system administrators <system-administration>`_
 
 .. toctree::
    :maxdepth: 2
@@ -16,7 +16,5 @@ This documentation site also includes a `guide for system administrators </syste
    whats-installed
    getting-started
    production
-   deployment
    migration
    system-administration
-   dimagi
