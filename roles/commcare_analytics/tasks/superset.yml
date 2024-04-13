@@ -146,7 +146,7 @@
   file:
     path: "{{ log_dir }}"
     state: directory
-    mode: 0644
+    mode: 0755
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
 
