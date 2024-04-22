@@ -47,18 +47,8 @@
     path: "{{ run_dir }}"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: 0750
+    mode: 0775
     state: directory
-  tags: superset
-
-- name: Create the superset.sock file
-  copy:
-    content: ""
-    dest: "{{ run_dir }}/superset.sock"
-    force: no
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: 0777
   tags: superset
 
 # Create config directory and files
