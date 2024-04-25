@@ -1,13 +1,14 @@
 ---
 
 superset_enabled: yes
-superset_public_host: "commcare-analytics.dimagi.com"
-superset_username: soltech
+superset_public_host: "commcare-analytics.example.com"
+superset_username: admin
 superset_firstname: Admin
 superset_lastname: User
-superset_email: devops+soltech@dimagi.com
+superset_email: admin@example.com
 superset_ssl_enabled: no
 superset_db_name: superset_meta
+oauth2_db_name: superset_oauth2
 cchq_db_name: superset_cchq_data
 
 project_timezone: 'Asia/Kolkata'
@@ -17,5 +18,5 @@ oauth_creds:
   token_key: 'access_token'
   client_id: "{{ vault_oauth_client_id }}"
   client_secret: "{{ vault_oauth_client_secret }}"
-  base_url: 'https://www.commcarehq.org/'
+  base_url: 'https://cchq.example.com/'
 ...

@@ -3,5 +3,12 @@ vault_db_password: gHBmNa4uqmL2s57kto
 vault_default_superset_password: 9GaYm61bqmmPGKIYYbXGkQlEFXGmLPi3
 vault_mapbox_api_key: mykey
 
+vault_superset_secret_key: secret-key
+
+# To generate a Fernet key:
+#     >>> from cryptography.fernet import Fernet
+#     >>> Fernet.generate_key()
+vault_superset_fernet_key: fernet-key
+
 vault_oauth_client_id: client_id
 vault_oauth_client_secret: secret

@@ -16,7 +16,7 @@ base_dir: "{{home_dir}}/www"
 project_dir: "{{ base_dir }}/{{ project_name }}"
 src_dir: "{{ base_dir }}/{{ project_name }}/code_root"
 virtualenv_dir: "{{ base_dir }}/.virtualenvs/{{ project_name }}"
-virtualenv_python_version: python3.8
+virtualenv_python_version: python3.10
 run_dir: "{{ base_dir }}/run"
 log_dir: "{{ base_dir }}/log"
 
