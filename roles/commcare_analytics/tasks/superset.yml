@@ -102,11 +102,11 @@
   environment: "{{ superset_environment }}"
   shell: |
     {{ superset_virtualenv_dir }}/bin/superset fab create-admin \
-                    --username {{ superset_admin_user_username }} \
-                    --firstname Superset \
-                    --lastname Admin \
-                    --email {{ superset_admin_user_email }} \
-                    --password {{ superset_admin_user_password }} \
+                    --username {{ superset_username }} \
+                    --firstname {{ superset_firstname }} \
+                    --lastname {{ superset_lastname }} \
+                    --email {{ superset_email }} \
+                    --password {{ superset_admin_password }} \
                     || true
   tags: superset
 
