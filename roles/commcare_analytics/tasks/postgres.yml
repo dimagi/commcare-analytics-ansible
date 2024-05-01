@@ -66,7 +66,7 @@
     template: 'template1'
     state: present
 
-- name: Ensure the default user has access to the database.
+- name: Ensure the default user has access to the default database.
   become: yes
   become_user: "{{ postgresql_user }}"
   postgresql_user:
@@ -89,11 +89,34 @@
     template: 'template1'
     state: present
 
-- name: Ensure the default user has access to the database.
+- name: Ensure the default user has access to the cchq database.
   become: yes
   become_user: "{{ postgresql_user }}"
   postgresql_user:
     db: "{{ cchq_db_name }}"
+    name: "{{ default_db_user }}"
+    password: "{{ default_db_password }}"
+    encrypted: yes
+    priv: ALL
+    state: present
+  tags: postgres
+
+- name: Ensure the oauth data database is created.
+  become: yes
+  become_user: "{{ postgresql_user }}"
+  postgresql_db:
+    name: "{{ oauth2_db_name }}"
+    encoding: 'UTF-8'
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
+    template: 'template1'
+    state: present
+
+- name: Ensure the default user has access to the oauth database.
+  become: yes
+  become_user: "{{ postgresql_user }}"
+  postgresql_user:
+    db: "{{ oauth2_db_name }}"
     name: "{{ default_db_user }}"
     password: "{{ default_db_password }}"
     encrypted: yes
