@@ -6,6 +6,7 @@ superset_username: soltech
 superset_firstname: Admin
 superset_lastname: User
 superset_email: devops+soltech@dimagi.com
+superset_admin_password: "{{ superset_admin_user_password }}"
 superset_ssl_enabled: yes
 superset_db_name: superset_meta
 oauth2_db_name: superset_oauth2
