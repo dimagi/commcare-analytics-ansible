@@ -119,7 +119,6 @@ CUSTOM_SECURITY_MANAGER = oauth.CommCareSecurityManager
 
 # Any project which wants to add custom images to their dashboards must have
 # the url of the image source added here, e.g. "https://mycoolimagesite.com"
-ADDITIONAL_CSP_ORIGIN_URLS = []
 
 TALISMAN_CONFIG = {
     "content_security_policy": {
@@ -131,7 +130,8 @@ TALISMAN_CONFIG = {
             "data:",
             "https://apachesuperset.gateway.scarf.sh",
             "https://static.scarf.sh/",
-        ] + ADDITIONAL_CSP_ORIGIN_URLS,
+            "*",
+        ],
         "worker-src": ["'self'", "blob:"],
         "connect-src": [
             "'self'",
