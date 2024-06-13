@@ -54,7 +54,8 @@ FEATURE_FLAGS = {
     "DASHBOARD_NATIVE_FILTERS_SET": True,
     "DASHBOARD_FILTERS_EXPERIMENTAL": True,
     "ENABLE_JAVASCRIPT_CONTROLS": True,
-    "ENABLE_TEMPLATE_PROCESSING": True
+    "ENABLE_TEMPLATE_PROCESSING": True,
+    "ALLOW_ADHOC_SUBQUERY": True,
 }
 
 # This is where async UCR imports are stored temporarily
@@ -115,3 +116,38 @@ LANGUAGES = {
 # CommCare Analytics extensions
 FLASK_APP_MUTATOR = flask_app_mutator
 CUSTOM_SECURITY_MANAGER = oauth.CommCareSecurityManager
+
+# Any project which wants to add custom images to their dashboards must have
+# the url of the image source added here, e.g. "https://mycoolimagesite.com"
+
+TALISMAN_CONFIG = {
+    "content_security_policy": {
+        "base-uri": ["'self'"],
+        "default-src": ["'self'"],
+        "img-src": [
+            "'self'",
+            "blob:",
+            "data:",
+            "https://apachesuperset.gateway.scarf.sh",
+            "https://static.scarf.sh/",
+            "*",
+        ],
+        "worker-src": ["'self'", "blob:"],
+        "connect-src": [
+            "'self'",
+            "https://api.mapbox.com",
+            "https://events.mapbox.com",
+        ],
+        "object-src": "'none'",
+        "style-src": [
+            "'self'",
+            "'unsafe-inline'",
+            "https://fonts.googleapis.com",
+        ],
+        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "script-src": ["'self'", "'unsafe-eval'"],
+    },
+    "content_security_policy_nonce_in": ["script-src"],
+    "force_https": False,
+    "session_cookie_secure": False,
+}

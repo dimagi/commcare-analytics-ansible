@@ -4,6 +4,8 @@ Production Environments
 This page outlines best practices around using this repository to create
 and manage a production environment.
 
+Note: if you're using an AWS EC2 instance, make sure the security group on AWS is configured so that your instance can accept
+HTTP and HTTPS traffic.
 
 Choose a location for the control
 ---------------------------------
