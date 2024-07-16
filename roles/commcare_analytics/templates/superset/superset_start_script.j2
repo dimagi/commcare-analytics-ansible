@@ -11,7 +11,7 @@ echo "Starting superset as `whoami`"
 # Programs meant to be run under supervisor should not daemonize themselves
 # (do not use --daemon).
 gunicorn \
-      -w 10 \
+      -w {{gunicorn_num_workers}} \
       -k gevent \
       --timeout {{gunicorn_timeout_seconds}} \
       --limit-request-line 0 \
