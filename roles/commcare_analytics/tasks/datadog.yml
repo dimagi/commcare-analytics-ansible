@@ -1,15 +1,25 @@
 ---
 
-- name: skipping install datadog agent
-  debug:
-    msg: "Skipping datadog because datadog_api_key is not set in the vault.yml file"
-  when: datadog_api_key is undefined
-  tags: datadog
-
 - name: install datadog agent
   import_role:
     name: datadog.dd.agent
   vars:
     datadog_api_key: "{{ datadog_api_key }}"
-  when: datadog_api_key is defined
+  when: datadog.enabled
+  tags: datadog
+
+- name: update datadog configuration
+  become: true
+  become_user: dd-agent
+  blockinfile:
+    path: /etc/datadog-agent/datadog.yaml
+    block: |
+      site: {{ datadog.site }}
+      hostname: {{ datadog.hostname }}
+  tags: datadog
+
+- name: Restart Datadog service
+  ansible.builtin.service:
+    name: datadog-agent
+    state: restarted
   tags: datadog
