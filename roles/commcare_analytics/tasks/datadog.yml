@@ -1,0 +1,15 @@
+---
+
+- name: skipping install datadog agent
+  debug:
+    msg: "Skipping datadog because datadog_api_key is not set in the vault.yml file"
+  when: datadog_api_key is undefined
+  tags: datadog
+
+- name: install datadog agent
+  import_role:
+    name: datadog.dd.agent
+  vars:
+    datadog_api_key: "{{ datadog_api_key }}"
+  when: datadog_api_key is defined
+  tags: datadog

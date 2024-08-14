@@ -12,3 +12,5 @@ vault_superset_fernet_key: fernet-key
 
 vault_oauth_client_id: client_id
 vault_oauth_client_secret: secret
+
+datadog_api_key: ""
