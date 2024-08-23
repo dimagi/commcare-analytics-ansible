@@ -13,7 +13,7 @@ echo "Starting {{ app_name }}_celery_default as `whoami`"
 exec celery --app superset.tasks.celery_app:app  \
     worker \
     -n worker1@%h \
-    --loglevel DEBUG \
+    --loglevel INFO \
     --logfile {{ log_dir }}/celery.log \
     -Q celery \
     --concurrency 10 \
