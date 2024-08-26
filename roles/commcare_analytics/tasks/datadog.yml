@@ -1,0 +1,25 @@
+---
+
+- name: install datadog agent
+  import_role:
+    name: datadog.dd.agent
+  vars:
+    datadog_api_key: "{{ datadog_api_key }}"
+  when: datadog.enabled
+  tags: datadog
+
+- name: update datadog configuration
+  become: true
+  become_user: dd-agent
+  blockinfile:
+    path: /etc/datadog-agent/datadog.yaml
+    block: |
+      site: {{ datadog.site }}
+      hostname: {{ datadog.hostname }}
+  tags: datadog
+
+- name: Restart Datadog service
+  ansible.builtin.service:
+    name: datadog-agent
+    state: restarted
+  tags: datadog

@@ -107,3 +107,6 @@
 
 - include_tasks: redis.yml
   tags: redis
+
+- include_tasks: datadog.yml
+  tags: datadog
