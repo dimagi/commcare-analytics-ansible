@@ -11,6 +11,10 @@ upstream superset {
   server unix:{{ run_dir }}/superset.sock fail_timeout=0;
 }
 
+log_format combined_with_timing '$remote_addr - $remote_user [$time_local] '
+                                '"$request" $request_time $status $bytes_sent '
+                                '"$http_referer" "$http_user_agent"';
+
 server {
   # Serve content
   server_name {{ superset_public_host }};
@@ -19,7 +23,7 @@ server {
 
   client_max_body_size 4G;
 
-  access_log {{ nginx_access_log_file }};
+  access_log {{ nginx_access_log_file }} combined_with_timing;
   error_log {{ nginx_error_log_file }};
 
   location / {
