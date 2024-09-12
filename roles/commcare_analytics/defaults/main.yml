@@ -69,7 +69,7 @@ superset_environment:
   FLASK_APP: superset
   SUPERSET_CONFIG_PATH: '{{ superset_project_dir }}/superset_config.py'
 
-gunicorn_num_workers: 20
+gunicorn_num_workers: 32
 gunicorn_max_requests: 0
 gunicorn_reload_workers: true
 gunicorn_timeout_seconds: 900
