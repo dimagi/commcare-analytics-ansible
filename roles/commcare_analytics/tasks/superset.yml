@@ -146,6 +146,13 @@
     backup: yes
   tags: superset
 
+- name: Create the Celery Beat Supervisor config file.
+  template:
+    src: superset/celery_beat_supervisor_config.j2
+    dest: /etc/supervisor/conf.d/{{ app_name }}_celery_beat.conf
+    backup: yes
+  tags: superset
+
 - name: Create log directory "{{ log_dir }}"
   file:
     path: "{{ log_dir }}"
@@ -165,6 +172,7 @@
   with_items:
     - supervisor.log
     - celery.log
+    - celery_beat.log
   tags: superset
 
 - name: Re-read the Superset supervisor config files.
@@ -174,6 +182,7 @@
   with_items:
     - superset
     - "{{ app_name }}_celery_default"
+    - "{{ app_name }}_celery_beat"
   tags: superset
 
 - name: Restart the Superset Supervisor process.
@@ -183,6 +192,7 @@
   with_items:
     - superset
     - "{{ app_name }}_celery_default"
+    - "{{ app_name }}_celery_beat"
   tags: superset
 
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Starting {{ app_name }}_celery_default as `whoami`"
+echo "Starting {{ app_name }}_celery_beat as `whoami`"
 
 # Activate the virtual environment.
 . {{ superset_virtualenv_dir }}/bin/activate
@@ -11,9 +11,6 @@ echo "Starting {{ app_name }}_celery_default as `whoami`"
 # Programs meant to be run under supervisor should not daemonize themselves
 # (do not use --daemon).
 exec celery --app superset.tasks.celery_app:app  \
-    worker \
-    -n worker1@%h \
+    beat \
     --loglevel INFO \
-    --logfile {{ log_dir }}/celery.log \
-    -Q celery \
-    --concurrency 5
+    --logfile {{ log_dir }}/celery_beat.log
