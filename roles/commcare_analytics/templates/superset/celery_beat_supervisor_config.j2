@@ -1,0 +1,9 @@
+[program:{{ app_name }}_celery_beat]
+command = {{ superset_virtualenv_dir }}/bin/celery_beat_start
+user = {{ app_user }}
+stdout_logfile = {{ log_dir }}/celery_beat.log
+stderr_logfile = {{ log_dir }}/celery_beat.log
+stdout_logfile_maxbytes=0
+stderr_logfile_maxbytes=0
+stdout_logfile_backups=0
+stderr_logfile_backups=0
