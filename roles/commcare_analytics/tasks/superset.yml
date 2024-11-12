@@ -146,7 +146,7 @@
     mode: 0750
     backup: yes
   tags:
-    - supervisor
+    - superset
     - celery
 
 - name: Create the Celery beat start script.
@@ -158,7 +158,7 @@
     mode: 0750
     backup: yes
   tags:
-    - supervisor
+    - superset
     - celery
 
 - name: Create the Celery Supervisor config file.
