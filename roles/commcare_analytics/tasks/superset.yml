@@ -4,7 +4,9 @@
   command: "{{ virtualenv_python_version }} -m venv {{ superset_virtualenv_dir }}"
   args:
     creates: "{{ superset_virtualenv_dir }}/bin/"
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Change ownership of superset virtualenv.
   file:
@@ -12,7 +14,9 @@
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
     recurse: yes
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Create the virtualenv post script to set environment variables.
   template:
@@ -22,7 +26,9 @@
     group: "{{ app_group }}"
     mode: 0750
     backup: yes
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Install packages required by Superset in the virtualenv.
   pip:
@@ -49,7 +55,9 @@
     group: "{{ app_group }}"
     mode: 0775
     state: directory
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 # Create config directory and files
 
@@ -137,21 +145,27 @@
     group: "{{ app_group }}"
     mode: 0750
     backup: yes
-  tags: supervisor
+  tags:
+    - supervisor
+    - celery
 
 - name: Create the Celery Supervisor config file.
   template:
     src: superset/celery_default_supervisor_config.j2
     dest: /etc/supervisor/conf.d/{{ app_name }}_celery_default.conf
     backup: yes
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Create the Celery Beat Supervisor config file.
   template:
     src: superset/celery_beat_supervisor_config.j2
     dest: /etc/supervisor/conf.d/{{ app_name }}_celery_beat.conf
     backup: yes
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Create log directory "{{ log_dir }}"
   file:
@@ -160,6 +174,9 @@
     mode: 0755
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
+  tags:
+    - superset
+    - celery
 
 - name: Create Supervisor log files.
   copy:
@@ -173,7 +190,9 @@
     - supervisor.log
     - celery.log
     - celery_beat.log
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Re-read the Superset supervisor config files.
   supervisorctl:
@@ -183,7 +202,9 @@
     - superset
     - "{{ app_name }}_celery_default"
     - "{{ app_name }}_celery_beat"
-  tags: superset
+  tags:
+    - superset
+    - celery
 
 - name: Restart the Superset Supervisor process.
   supervisorctl:
@@ -193,8 +214,9 @@
     - superset
     - "{{ app_name }}_celery_default"
     - "{{ app_name }}_celery_beat"
-  tags: superset
-
+  tags:
+    - superset
+    - celery
 
 - name: Create superset nginx config.
   template:
