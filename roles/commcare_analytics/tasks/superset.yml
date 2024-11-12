@@ -7,6 +7,7 @@
   tags:
     - superset
     - celery
+    - superset-admin
 
 - name: Change ownership of superset virtualenv.
   file:
@@ -17,6 +18,7 @@
   tags:
     - superset
     - celery
+    - superset-admin
 
 - name: Create the virtualenv post script to set environment variables.
   template:
@@ -116,7 +118,9 @@
                     --email {{ superset_email }} \
                     --password {{ superset_admin_password }} \
                     || true
-  tags: superset
+  tags:
+    - superset
+    - superset-admin
 
 # Supervisor files
 
