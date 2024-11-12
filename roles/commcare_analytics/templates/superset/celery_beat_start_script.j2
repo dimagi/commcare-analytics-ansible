@@ -12,5 +12,6 @@ echo "Starting {{ app_name }}_celery_beat as `whoami`"
 # (do not use --daemon).
 exec celery --app superset.tasks.celery_app:app  \
     beat \
+    -s /home/ubuntu/www/run/celerybeat-schedule \
     --loglevel INFO \
     --logfile {{ log_dir }}/celery_beat.log
