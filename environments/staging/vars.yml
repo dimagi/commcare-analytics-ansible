@@ -12,7 +12,14 @@ superset_db_name: superset_meta
 oauth2_db_name: superset_oauth2
 cchq_db_name: superset_cchq_data
 
+datadog:
+  enabled: true
+  hostname: staging
+  site: us5.datadoghq.com
+
 project_timezone: 'US/Pacific'
+
+superset_ketchup_version: "staging"
 
 # Superset Auth settings
 oauth_creds:

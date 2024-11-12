@@ -16,4 +16,4 @@ exec celery --app superset.tasks.celery_app:app  \
     --loglevel INFO \
     --logfile {{ log_dir }}/celery.log \
     -Q celery \
-    --concurrency 5
+    --concurrency 15

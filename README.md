@@ -1,11 +1,14 @@
 CommCare Analytics Ansible
 ==========================
 
-Tools for setting up and deploying Commcare Analytics server
+Tools for setting up and deploying a Commcare Analytics server.
 
 
 Documentation
 -------------
+
+The documentation in the `docs/` directory is hosted on [Read the Docs](https://commcare-analytics-ansible.readthedocs.io/en/latest/).
+
 
 ## Building the docs
 
@@ -41,10 +44,3 @@ To build the docs locally,
    ```shell
    $ firefox _build/html/index.html
    ```
-
-
-Hosting the docs
-----------------
-
-Docs are hosted on readthedocs and managed by Dimagi.
-Credentials for the Dimagi account can be found in Keepass.
