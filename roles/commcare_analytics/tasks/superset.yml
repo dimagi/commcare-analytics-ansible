@@ -149,6 +149,18 @@
     - supervisor
     - celery
 
+- name: Create the Celery beat start script.
+  template:
+    src: superset/celery_beat_start_script.j2
+    dest: "{{ superset_virtualenv_dir }}/bin/celery_beat_start"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: 0750
+    backup: yes
+  tags:
+    - supervisor
+    - celery
+
 - name: Create the Celery Supervisor config file.
   template:
     src: superset/celery_default_supervisor_config.j2
