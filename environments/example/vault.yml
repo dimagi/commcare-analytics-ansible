@@ -15,3 +15,8 @@ vault_oauth_client_secret: secret
 
 superset_admin_password: ""
 datadog_api_key: ""
+
+secrets:
+  s3_bucket: ""
+  amazon_s3_access_key: ""
+  amazon_s3_secret_key: ""
