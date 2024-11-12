@@ -14,6 +14,8 @@ cchq_db_name: superset_cchq_data
 
 project_timezone: 'US/Pacific'
 
+superset_ketchup_version: "staging"
+
 # Superset Auth settings
 oauth_creds:
   token_key: 'access_token'
