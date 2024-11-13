@@ -17,6 +17,7 @@ datadog:
   site: us5.datadoghq.com
 
 project_timezone: 'Asia/Kolkata'
+enable_postgresql_backup: true
 
 # Superset Auth settings
 oauth_creds:

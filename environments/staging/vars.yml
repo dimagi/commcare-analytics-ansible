@@ -20,6 +20,7 @@ datadog:
 project_timezone: 'US/Pacific'
 
 superset_ketchup_version: "staging"
+enable_postgresql_backup: true
 
 # Superset Auth settings
 oauth_creds:
