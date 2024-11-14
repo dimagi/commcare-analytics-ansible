@@ -6,3 +6,11 @@
     update_cache: "{{ apt_update_cache }}"
     state: present
   tags: redis
+
+- name: Set redis config
+  become: yes
+  lineinfile:
+    dest: /etc/redis/redis.conf
+    line: '{{ item.key }} {{ item.value }}'
+  with_dict: "{{ redis_config }}"
+  tags: redis
