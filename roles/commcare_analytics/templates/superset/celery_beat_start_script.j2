@@ -12,6 +12,8 @@ echo "Starting {{ app_name }}_celery_beat as `whoami`"
 # (do not use --daemon).
 exec celery --app superset.tasks.celery_app:app  \
     beat \
+    # Beat fails to start with default error accessing celerybeat-schedule file
+    # so manually set one
     -s /home/ubuntu/www/run/celerybeat-schedule \
     --loglevel INFO \
     --logfile {{ log_dir }}/celery_beat.log
