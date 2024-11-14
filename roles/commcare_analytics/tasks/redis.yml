@@ -15,7 +15,7 @@
   with_dict: "{{ redis_config }}"
   tags: redis
 
-- name: Highlight manual redis restart needed
-  debug:
-    msg: "Redis was not restarted. To be done manually if needed."
+- name: Set redis config to avoid restart
+  shell: 'redis-cli config set {{ item.key }} {{ item.value }}'
+  with_dict: "{{ redis_config }}"
   tags: redis
