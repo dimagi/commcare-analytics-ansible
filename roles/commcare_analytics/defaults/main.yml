@@ -89,5 +89,5 @@ certbot_domains:
 # Database backup variables
 postgresql_backup_enabled: "{{ enable_postgresql_backup }}"
 postgresql_backup_dir: "/var/tmp"
-postgresql_backup_db_list: "superset superset_cchq_data superset_meta superset_oauth2"
+postgresql_backup_db_list: "superset superset_meta superset_oauth2"
 postgresql_user_home_dir: "/var/lib/postgresql"
