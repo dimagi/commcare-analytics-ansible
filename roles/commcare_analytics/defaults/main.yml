@@ -93,5 +93,7 @@ postgresql_backup_db_list: "commcare_analytics superset"
 postgresql_user_home_dir: "/var/lib/postgresql"
 
 redis_config:
+  # recommended memory setting for redis after which
+  # it will error out instead of consuming more memory
   maxmemory: "{{ ansible_memory_mb.real.total // 2 }}mb"
   maxmemory-policy: volatile-lru
