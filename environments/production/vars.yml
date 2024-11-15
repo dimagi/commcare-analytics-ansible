@@ -1,0 +1,29 @@
+---
+
+superset_enabled: yes
+superset_public_host: "commcare-analytics.dimagi.com"
+superset_username: soltech
+superset_firstname: Soltech
+superset_lastname: Devops
+superset_email: devops+soltech@dimagi.com
+superset_admin_password: "{{ superset_admin_user_password }}"
+superset_ssl_enabled: yes
+ssl_enabled: yes
+superset_db_name: superset_meta
+oauth2_db_name: superset_oauth2
+cchq_db_name: superset_cchq_data
+
+datadog:
+  enabled: true
+  hostname: production
+  site: us5.datadoghq.com
+
+project_timezone: 'US/Pacific'
+
+# Superset Auth settings
+oauth_creds:
+  token_key: 'access_token'
+  client_id: "{{ vault_oauth_client_id }}"
+  client_secret: "{{ vault_oauth_client_secret }}"
+  base_url: 'https://commcarehq.org/'
+...
