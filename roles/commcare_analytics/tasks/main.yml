@@ -106,6 +106,18 @@
   when: postgresql_backup_enabled
   tags: postgres_backup
 
+- name: Set overcommit_memory attribute in conf
+  become: yes
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: 'vm.overcommit_memory=1'
+  tags: redis
+
+- name: Set overcommit_memory to avoid reboot
+  become: yes
+  shell: sysctl vm.overcommit_memory=1
+  tags: redis
+
 - include_tasks: redis.yml
   tags: redis
 
