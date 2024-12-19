@@ -1,0 +1,12 @@
+#
+# {{ ansible_managed }}
+#
+init_config:
+
+instances:
+  - rabbitmq_api_url: http://localhost:15672/api/
+    rabbitmq_user: {{ rabbitmq_user }}
+    rabbitmq_pass: {{ rabbitmq_password }}
+    tags:
+     - instance:{{ datadog.hostname }}
+    skip_proxy: true
