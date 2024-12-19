@@ -12,7 +12,7 @@ superset_db_name: superset_meta
 oauth2_db_name: superset_oauth2
 cchq_db_name: superset_cchq_data
 
-rabbitmq_version: 3.9.13-1
+rabbitmq_version: 3.10.13-1
 
 datadog:
   enabled: true
