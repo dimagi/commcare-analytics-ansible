@@ -28,13 +28,11 @@
 
 - name: Place config file
   template:
-    src: "{{ item.src }}"
-    dest: "/etc/rabbitmq/{{ item.dest }}"
+    src: rabbitmq/rabbitmq.conf.j2
+    dest: /etc/rabbitmq/rabbitmq.conf
     group: root
     owner: rabbitmq
     mode: 0644
-  loop:
-    - {"src": "rabbitmq/rabbitmq.conf.j2", "dest": "rabbitmq.conf"}
   tags: rabbitmq
 
 - name: Create directory for ulimt
