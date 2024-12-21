@@ -89,7 +89,9 @@
     group: "{{ app_group }}"
     mode: 0640
     backup: yes
-  tags: superset
+  tags:
+    - superset
+    - superset_config
 
 
 - name: Run Superset database migrations.

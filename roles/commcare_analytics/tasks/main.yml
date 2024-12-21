@@ -93,11 +93,15 @@
 - include_tasks: postgres.yml
   tags: postgres
 
+- include_tasks: rabbitmq.yml
+  tags: rabbitmq
+
 - include_tasks: superset.yml
   tags:
     - superset
     - superset-admin
     - celery
+    - superset_config
 
 - include_tasks: logrotate.yml
   tags: logging
