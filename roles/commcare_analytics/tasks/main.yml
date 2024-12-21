@@ -101,6 +101,7 @@
     - superset
     - superset-admin
     - celery
+    - superset_config
 
 - include_tasks: logrotate.yml
   tags: logging
