@@ -26,6 +26,15 @@
   ignore_errors: '{{ ansible_check_mode }}'
   tags: rabbitmq
 
+- name: Enable rabbitmq plugins
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+  ignore_errors: '{{ ansible_check_mode }}'
+  notify:
+    - restart rabbitmq
+  tags: rabbitmq
+
 - name: Place config file
   template:
     src: rabbitmq/rabbitmq.conf.j2
