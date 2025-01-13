@@ -27,6 +27,15 @@
     mode: 0640
   tags: datadog
 
+- name: Add rabbitmq config
+  template:
+    src: "datadog/rabbitmq.yaml.j2"
+    dest: "/etc/datadog-agent/conf.d/rabbitmq.d/conf.yaml"
+    owner: dd-agent
+    group: dd-agent
+    mode: 0640
+  tags: datadog
+
 - name: Restart Datadog service
   ansible.builtin.service:
     name: datadog-agent

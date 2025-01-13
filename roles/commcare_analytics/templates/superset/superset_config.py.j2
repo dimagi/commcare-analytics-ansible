@@ -61,6 +61,7 @@ FEATURE_FLAGS = {
 SHARED_DIR = '{{ superset_shared_dir }}'
 
 _REDIS_URL = 'redis://localhost:6379/0'
+_RABBITMQ_URL = 'amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@localhost:5672/commcare_analytics'
 
 CACHE_CONFIG = {
       'CACHE_TYPE': 'RedisCache',
@@ -76,7 +77,7 @@ RESULTS_BACKEND = RedisCache(
 
 class CeleryConfig(object):
     accept_content = ['pickle', 'application/json']
-    broker_url = _REDIS_URL
+    broker_url = _RABBITMQ_URL
     imports = (
         'superset.sql_lab',
         'superset.tasks',

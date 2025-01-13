@@ -1,0 +1,105 @@
+---
+- name: Install Erlang dependency
+  apt:
+    name: erlang
+    state: present
+  tags: rabbitmq
+
+- name: Add trusted key
+  apt_key:
+    url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+    state: present
+  tags: rabbitmq
+
+- name: Add rabbitmq official apt repository
+  apt_repository:
+    repo: 'deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu {{ ansible_distribution_release|lower }} main'
+    state: present
+    update_cache: "{{ apt_update_cache }}"
+  tags: rabbitmq
+
+- name: Install package
+  apt:
+    name: "rabbitmq-server={{ rabbitmq_version }}"
+    update_cache: "{{ apt_update_cache }}"
+    state: present
+  ignore_errors: '{{ ansible_check_mode }}'
+  tags: rabbitmq
+
+- name: Enable rabbitmq plugins
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+  ignore_errors: '{{ ansible_check_mode }}'
+  notify:
+    - restart rabbitmq
+  tags: rabbitmq
+
+- name: Place config file
+  template:
+    src: rabbitmq/rabbitmq.conf.j2
+    dest: /etc/rabbitmq/rabbitmq.conf
+    group: root
+    owner: rabbitmq
+    mode: 0644
+  tags: rabbitmq
+
+- name: Create directory for ulimt
+  file:
+    path: /etc/systemd/system/rabbitmq-server.service.d
+    state: directory
+    mode: '0755'
+  tags: rabbitmq
+
+- name: setting Ulimit for rabbitmq
+  raw: echo "[Service]\nLimitNOFILE=65536" > /etc/systemd/system/rabbitmq-server.service.d/limits.conf
+  tags: rabbitmq
+
+- name: just force systemd to reread configs
+  systemd:
+    daemon_reload: yes
+  tags: rabbitmq
+
+- name: Make sure RabbitMQ service is started before running config tasks
+  become: yes
+  service: name=rabbitmq-server state=started
+  ignore_errors: '{{ ansible_check_mode }}'
+  tags: rabbitmq
+
+- name: Ensure vhost commcare_analytics is present
+  become: true
+  rabbitmq_vhost:
+    name: commcare_analytics
+    state: present
+  notify:
+  - restart rabbitmq
+  tags: rabbitmq
+
+- name: Add users
+  become: true
+  rabbitmq_user: >
+    user={{ rabbitmq_user }}
+    password={{ rabbitmq_password }}
+    tags='administrator'
+    vhost=commcare_analytics
+    configure_priv=.*
+    write_priv=.*
+    read_priv=.*
+    state=present
+  notify:
+  - restart rabbitmq
+  tags: rabbitmq
+
+- name: Remove default guest user
+  become: true
+  rabbitmq_user:
+    user: guest
+    state: absent
+  notify:
+  - restart rabbitmq
+  tags: rabbitmq
+
+- name: Enable and start RabbitMQ service
+  become: yes
+  service: name=rabbitmq-server state=started
+  tags: rabbitmq
