@@ -157,3 +157,6 @@ TALISMAN_CONFIG = {
 
 USER_DOMAIN_ROLE_EXPIRY = 60 # minutes
 SKIP_DATASET_CHANGE_FOR_DOMAINS = []
+
+# Used for datadog monitoring
+SERVER_ENVIRONMENT = "{{ datadog.hostname }}"  # staging, production, etc.
