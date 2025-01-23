@@ -18,6 +18,7 @@ datadog:
 
 project_timezone: 'Asia/Kolkata'
 enable_postgresql_backup: false
+postgresql_backup_retention_days: 7
 
 # Superset Auth settings
 oauth_creds:

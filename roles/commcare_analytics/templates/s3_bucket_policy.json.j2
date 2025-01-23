@@ -4,7 +4,7 @@
             "Status": "Enabled",
             "Prefix": "postgres_backup",
             "Expiration": {
-                "Days": 7
+                "Days": "{{ postgresql_backup_retention_days }}"
             },
             "ID": "DeleteExpiredPostgresBackups"
         }
