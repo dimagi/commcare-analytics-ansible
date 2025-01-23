@@ -37,3 +37,20 @@
     user: "{{ postgresql_user }}"
   tags:
     - postgres_backup
+
+- name: Adding backup policy configuration
+  become: yes
+  template:
+    src: s3_bucket_policy.json.j2
+    dest: /usr/local/bin/s3_bucket_policy.json
+    group: "{{ postgresql_user }}"
+    owner: "{{ postgresql_user }}"
+    mode: 0700
+  tags:
+    - postgres_backup
+
+- name: Create S3 bucket lifecycle policy
+  become: yes
+  command: "aws s3api put-bucket-lifecycle-configuration --bucket {{ s3_bucket_name }} --policy file:///usr/local/bin/s3_bucket_policy.json"
+  tags:
+    - postgres_backup
