@@ -59,7 +59,7 @@ if [ "$N_BACKUPS" -gt 0 ]; then
     # List objects matching the pattern and capture the result in a variable
     objects_to_delete=$(aws s3api list-objects --bucket "{{ secrets.s3_bucket }}" --query "Contents[?starts_with(Key, 'postgres_backup_')].[Key, LastModified]" --output text | \
       sort -k2 | \
-      head -n -"{{ postgresql_backups_to_keep }}"
+      head -n -$N_BACKUPS)
 
     # Check if there are any objects to delete
     if [ -n "$objects_to_delete" ]; then
