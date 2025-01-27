@@ -21,6 +21,8 @@ datadog:
   site: us5.datadoghq.com
 
 project_timezone: 'US/Pacific'
+enable_postgresql_backup: true
+postgresql_backups_to_keep: 7  # 0 will ignore this setting
 
 # Superset Auth settings
 oauth_creds:

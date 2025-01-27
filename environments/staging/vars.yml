@@ -23,6 +23,7 @@ project_timezone: 'US/Pacific'
 
 superset_ketchup_version: "staging"
 enable_postgresql_backup: true
+postgresql_backups_to_keep: 3  # 0 will ignore this setting
 
 # Superset Auth settings
 oauth_creds:
