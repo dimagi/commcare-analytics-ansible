@@ -59,6 +59,7 @@ FEATURE_FLAGS = {
 
 # This is where async UCR imports are stored temporarily
 SHARED_DIR = '{{ superset_shared_dir }}'
+REMOVE_SHARED_FILES_AFTER = 7 # days
 
 _REDIS_URL = 'redis://localhost:6379/0'
 _RABBITMQ_URL = 'amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@localhost:5672/commcare_analytics'
