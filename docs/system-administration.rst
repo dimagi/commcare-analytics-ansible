@@ -40,8 +40,8 @@ project-specific environment variables. ::
 ..
     TODO: Make this true:
 
-    Deploying Changes
-    ^^^^^^^^^^^^^^^^^
+Deploying Changes
+^^^^^^^^^^^^^^^^^
 
     You may wish to deploy updates to the server, for example to pull the
     latest changes from the CommCare analytics code.
