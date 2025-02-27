@@ -10,10 +10,10 @@ echo "Starting {{ app_name }}_celery_beat as `whoami`"
 
 # Programs meant to be run under supervisor should not daemonize themselves
 # (do not use --daemon).
+# Beat fails to start with default error accessing celerybeat-schedule file
+# so manually set one using -s option
 exec celery --app superset.tasks.celery_app:app  \
     beat \
-    # Beat fails to start with default error accessing celerybeat-schedule file
-    # so manually set one
     -s /home/ubuntu/www/run/celerybeat-schedule \
     --loglevel INFO \
     --logfile {{ log_dir }}/celery_beat.log
