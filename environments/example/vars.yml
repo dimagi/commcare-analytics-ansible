@@ -1,5 +1,6 @@
 ---
 
+env: example
 superset_enabled: yes
 superset_public_host: "commcare-analytics.example.com"
 superset_username: admin
@@ -13,7 +14,7 @@ cchq_db_name: superset_cchq_data
 
 datadog:
   enabled: false
-  hostname: example-env
+  hostname: "{{ env }}"
   site: us5.datadoghq.com
 
 project_timezone: 'Asia/Kolkata'

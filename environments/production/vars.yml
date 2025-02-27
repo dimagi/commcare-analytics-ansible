@@ -1,5 +1,6 @@
 ---
 
+env: production
 superset_enabled: yes
 superset_public_host: "commcare-analytics.dimagi.com"
 superset_username: soltech
@@ -17,7 +18,7 @@ rabbitmq_version: 3.10.13-1
 
 datadog:
   enabled: true
-  hostname: production
+  hostname: "{{ env }}"
   site: us5.datadoghq.com
 
 project_timezone: 'US/Pacific'

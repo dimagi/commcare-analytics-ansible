@@ -1,5 +1,6 @@
 ---
 
+env: staging
 superset_enabled: yes
 superset_public_host: "commcare-analytics-staging.dimagi.com"
 superset_username: soltech
@@ -16,7 +17,7 @@ rabbitmq_version: 3.10.13-1
 
 datadog:
   enabled: true
-  hostname: staging
+  hostname: "{{ env }}"
   site: us5.datadoghq.com
 
 project_timezone: 'US/Pacific'
