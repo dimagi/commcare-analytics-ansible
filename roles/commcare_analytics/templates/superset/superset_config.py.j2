@@ -54,11 +54,13 @@ FEATURE_FLAGS = {
     "DASHBOARD_NATIVE_FILTERS_SET": True,
     "DASHBOARD_FILTERS_EXPERIMENTAL": True,
     "ENABLE_JAVASCRIPT_CONTROLS": True,
-    "ENABLE_TEMPLATE_PROCESSING": True
+    "ENABLE_TEMPLATE_PROCESSING": True,
+    "ALLOW_ADHOC_SUBQUERY": True,
 }
 
 # This is where async UCR imports are stored temporarily
 SHARED_DIR = '{{ superset_shared_dir }}'
+REMOVE_SHARED_FILES_AFTER = 7 # days
 
 _REDIS_URL = 'redis://localhost:6379/0'
 _RABBITMQ_URL = 'amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@localhost:5672/commcare_analytics'

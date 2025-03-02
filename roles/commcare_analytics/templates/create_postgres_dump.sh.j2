@@ -2,7 +2,7 @@
 TODAY=$(date +"%Y_%m_%d")
 NOW=$(date +"%Y_%m_%d %H:%M:%S")
 
-BACKUP_NAME="postgres_backup_${TODAY}"
+BACKUP_NAME="{{ env }}_postgres_backup_${TODAY}"
 BACKUP_DIRECTORY="{{ postgresql_backup_dir }}/$BACKUP_NAME"
 LOGFILE="/var/tmp/cron_log"
 
@@ -57,7 +57,7 @@ N_BACKUPS="{{ postgresql_backups_to_keep }}"
 if [ "$N_BACKUPS" -gt 0 ]; then
     log "Checking for backups to remove";
     # List objects matching the pattern and capture the result in a variable
-    objects_to_delete=$(aws s3api list-objects --bucket "{{ secrets.s3_bucket }}" --query "Contents[?starts_with(Key, 'postgres_backup_')].[Key, LastModified]" --output text | \
+    objects_to_delete=$(aws s3api list-objects --bucket "{{ secrets.s3_bucket }}" --query "Contents[?starts_with(Key, '{{ env }}_postgres_backup_')].[Key, LastModified]" --output text | \
       sort -k2 | \
       head -n -$N_BACKUPS)
 
