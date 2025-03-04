@@ -29,7 +29,7 @@
 - name: Create Weekly Cron job
   become: yes
   cron:
-    name: "Backup Postgres Weekly"
+    name: "Backup Postgres Daily"
     job: "bash /usr/local/bin/create_postgres_dump.sh"
     minute: "0"
     hour: "8"
