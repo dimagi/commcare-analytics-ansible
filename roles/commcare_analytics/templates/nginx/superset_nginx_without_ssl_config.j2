@@ -15,6 +15,8 @@ log_format combined_with_timing '$remote_addr - $remote_user [$time_local] '
                                 '"$request" $request_time $status $bytes_sent '
                                 '"$http_referer" "$http_user_agent"';
 
+limit_req_zone $binary_remote_addr zone=ip_limited:10m rate=50r/s;
+
 server {
   # Serve content
   server_name {{ superset_public_host }};
@@ -22,6 +24,8 @@ server {
   listen [::]:80;
 
   client_max_body_size 4G;
+
+  limit_req zone=ip_limited burst=100 nodelay;
 
   access_log {{ nginx_access_log_file }} combined_with_timing;
   error_log {{ nginx_error_log_file }};
