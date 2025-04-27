@@ -49,6 +49,13 @@
     - packages
     - skip_ansible_lint
 
+
+# System
+
+- include_tasks: swap.yml
+  tags: swap
+
+
 # Users & Groups
 
 - name: Create the app group.
