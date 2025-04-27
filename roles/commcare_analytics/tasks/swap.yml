@@ -46,6 +46,7 @@
     value: 1
     state: present
   become: true
+  when: swap_size is defined
   tags: swap
 
 # below are commands to remove swap if swap_size is removed from the config
