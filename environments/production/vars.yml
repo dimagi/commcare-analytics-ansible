@@ -1,6 +1,7 @@
 ---
 
 env: production
+swap_size: 16G
 superset_enabled: yes
 superset_public_host: "commcare-analytics.dimagi.com"
 superset_username: soltech
